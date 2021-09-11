@@ -1,10 +1,12 @@
-import React from 'react';
-import classes from "./header.module.scss";
+import React, {FC} from 'react';
+import {NavBar} from "./NavBar/NavBar";
+import classes from "./content.module.scss";
 
-export const Header = () => {
+export const Content:FC = ({children}) => {
     return (
-        <header className={classes.header__wrap}>
-            здесь хедер
-        </header>
+        <div className={classes.content__container}>
+            <NavBar/>
+            {children}
+        </div>
     )
 }

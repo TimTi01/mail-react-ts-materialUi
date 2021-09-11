@@ -1,15 +1,26 @@
-import React, {useEffect, useState, FC} from 'react';
+import React, {FC, useState} from 'react';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {Mail} from '../../../Types/Types'
-import axios from "axios";
-import {Box, Avatar, Button, Checkbox, Container, Divider, Paper, Toolbar, Grid, IconButton, Typography} from "@material-ui/core";
+import {Mail, spamProps} from '../../../Types/Types'
+import {
+    Avatar,
+    Box,
+    Button,
+    Checkbox,
+    Container,
+    Divider,
+    Grid,
+    IconButton,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import ForwardIcon from '@material-ui/icons/Forward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import ReportIcon from '@material-ui/icons/Report';
+import ReplayIcon from '@material-ui/icons/Replay';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import UnsubscribeIcon from '@material-ui/icons/Unsubscribe';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { deepPurple } from '@material-ui/core/colors';
+import {deepPurple} from '@material-ui/core/colors';
 
 const useStyle = makeStyles((theme:Theme) => createStyles({
     container: {
@@ -94,16 +105,24 @@ function delMails(mails:Mail[], setMails:any, checkedMain:boolean) {
     // setMails(mails)
 }
 
-export const SocialNet:FC = () => {
-    const classes = useStyle()
-    const [mails, setMails] = useState<Mail[]>([])
-    const [checkedMain, setCheckedMain] = useState(false)
-    const [disabled, setDisabled] = useState(true)
+function getMail(mails:Mail[], setMails:any) {
+    for (const mail of mails) {
+        if (mail.checked) {
+            mail.is_spam = false
+        }
+    }
+    setMails(mails)
+}
 
-    useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/comments?_limit=0')
-            .then(response => setMails(response.data))
-    }, [])
+export const Spam:FC<spamProps> = ({mails, setMails}) => {
+    console.log(mails)
+    console.log(setMails)
+
+    const classes = useStyle()
+    // const [spamMails, setSpamMails] = useState<Mail[]>([])
+    const [checkedMain, setCheckedMain] = useState(false)
+
+    const [disabled, setDisabled] = useState(true)
 
     function checkArray() {
         if (mails.length <= 0) {
@@ -135,7 +154,7 @@ export const SocialNet:FC = () => {
                             <Button disabled={disabled} onClick={() => {delMails(mails, setMails, checkedMain)}} variant={'text'} startIcon={<DeleteForeverIcon/>}>Удалить</Button>
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} variant={'text'} startIcon={<ReportIcon/>}>Это спам!</Button>
+                            <Button disabled={disabled} variant={'text'} onClick={() => getMail(mails, setMails)} startIcon={<ReplayIcon/>}>Не спам!</Button>
                         </Box>
                         <Box pl={1}>
                             <Button disabled={disabled} variant={'text'} startIcon={<DraftsIcon/>}>Прочитано</Button>
@@ -151,32 +170,36 @@ export const SocialNet:FC = () => {
                     </Grid>
                     <Divider/>
                     {checkArray()}
-                    {mails.map((mail: Mail) => (
-                        <Grid key={mail.id} item container zeroMinWidth direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
-                            <Box pl={1}>
-                                {/*<Checkbox checked={mail.checked || checkedMain}*/}
-                                {/*          onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}*/}
-                                {/*/>*/}
-                                <Checkbox checked={mail.checked}
-                                          onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}
-                                />
-                            </Box>
-                            <Box pr={10} display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                                <Avatar alt={mail.email} className={classes.avatar}/>
-                                <Box pl={1}>
-                                    <Typography>{mail.email}</Typography>
-                                </Box>
-                            </Box>
-                            <Box pr={2}>
-                                <Typography>{mail.name}</Typography>
-                            </Box>
-                            <Box className={classes.maxWidth}>
-                                <Typography noWrap color={'textSecondary'} variant={'body2'}>
-                                    {mail.body}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                    ))}
+                    {mails.map((mail: Mail) => {
+                        if (mail.is_spam) {
+                            return (
+                                <Grid key={mail.id} item container zeroMinWidth direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
+                                    <Box pl={1}>
+                                        {/*<Checkbox checked={mail.checked || checkedMain}*/}
+                                        {/*          onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}*/}
+                                        {/*/>*/}
+                                        <Checkbox checked={mail.checked}
+                                                  onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}
+                                        />
+                                    </Box>
+                                    <Box pr={10} display={'flex'} flexDirection={'row'} alignItems={'center'}>
+                                        <Avatar alt={mail.email} className={classes.avatar}/>
+                                        <Box pl={1}>
+                                            <Typography>{mail.email}</Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box pr={2}>
+                                        <Typography>{mail.name}</Typography>
+                                    </Box>
+                                    <Box className={classes.maxWidth}>
+                                        <Typography noWrap color={'textSecondary'} variant={'body2'}>
+                                            {mail.body}
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+                            )
+                        }
+                    })}
                 </Grid>
             </Paper>
         </Container>

@@ -94,16 +94,28 @@ function delMails(mails:Mail[], setMails:any, checkedMain:boolean) {
     // setMails(mails)
 }
 
-export const Mails:FC = () => {
+export const SocialNet:FC = () => {
     const classes = useStyle()
     const [mails, setMails] = useState<Mail[]>([])
     const [checkedMain, setCheckedMain] = useState(false)
     const [disabled, setDisabled] = useState(true)
 
     useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/comments?_limit=5')
+        axios.get('https://jsonplaceholder.typicode.com/comments?_limit=0')
             .then(response => setMails(response.data))
     }, [])
+
+    function checkArray() {
+        if (mails.length <= 0) {
+            return (
+                <Grid container justifyContent='center'>
+                    <Grid item>
+                        <Typography variant="h2"> Писем неть :(</Typography>
+                    </Grid>
+                </Grid>
+        )
+        }
+    }
 
     return (
         <Container className={classes.container} maxWidth={"xl"}>
@@ -138,6 +150,7 @@ export const Mails:FC = () => {
                         </Box>
                     </Grid>
                     <Divider/>
+                    {checkArray()}
                     {mails.map((mail: Mail) => (
                         <Grid key={mail.id} item container zeroMinWidth direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
                             <Box pl={1}>
