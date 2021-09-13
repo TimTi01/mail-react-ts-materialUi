@@ -30,7 +30,8 @@ import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import FolderIcon from "@material-ui/icons/Folder";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {Folders} from "../../../Types/Types";
-
+import lightBlue from '@material-ui/core/colors/lightBlue';
+import red from '@material-ui/core/colors/red';
 
 const drawerWidth = 240
 
@@ -41,28 +42,61 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         drawer: {
             width: drawerWidth - 10,
+            [theme.breakpoints.up(1440)]: {
+                width: drawerWidth - 130,
+            },
+            [theme.breakpoints.between('md', 1441)]: {
+                width: drawerWidth - 40,
+            },
         },
         drawerPaper: {
-            width: drawerWidth
+            width: drawerWidth,
+            borderRight: '3px solid #edeef0',
+            [theme.breakpoints.up('md')]: {
+                width: drawerWidth - 30,
+            },
         },
         button: {
             marginTop: theme.spacing(2),
             marginLeft: theme.spacing(1),
-            borderRadius: '20px'
+            borderRadius: theme.spacing(4),
+            backgroundColor: lightBlue[400],
+            color: '#fff',
+            '&:hover': {
+                backgroundColor: lightBlue[400],
+            },
         },
+        list__ListItem: {
+            padding: '3px 16px',
+            '&:hover': {
+                backgroundColor: '#edeef0',
+            },
+        },
+        listItem__ListItemIcon: {
+            minWidth: '40px',
+        },
+        divider: {
+            height: '3px',
+            backgroundColor: '#edeef0',
+        },
+        button_color: {
+            color: lightBlue[400],
+        },
+        folderIcon: {
+            minWidth: '40px',
+        },
+        folderDelButton: {
+            padding: '5px 12px',
+            '&:hover': {
+                color: red[600],
+                backgroundColor: 'transparent',
+            },
+        }
     })
 )
 
 function deleteFolder(folderId: number, folders: Folders[], setFolders: any) {
-    // for (const folder of folders) {
-    //     if (folder.id === folderId) {
-    //         folders.splice(folder.id, 1)
-    //     } else {
-    //         newFolders.push(folder)
-    //     }
-    // }
     const newFolders = []
-    debugger
     for (let folder = 0; folder < folders.length; folder++) {
         if (folders[folder].id === folderId) {
             folders.splice(0, 1)
@@ -81,11 +115,7 @@ export const NavBar:FC = () => {
     const classes = useStyles()
     const [open, setOpen] = useState(false)
     const [openDialog, setOpenDialog] = useState(false);
-    const [folders, setFolders] = useState<Folders[]>([
-        {id: 0, primary: 'Папка 1'},
-        {id: 1, primary: 'Папка 2'},
-        {id: 2, primary: 'Папка 3'},
-    ])
+    const [folders, setFolders] = useState<Folders[]>([])
 
     const [value, setValue] = useState("")
     const history = useHistory()
@@ -118,7 +148,6 @@ export const NavBar:FC = () => {
                     <Button
                         onClick={() => console.log('Жмяк')}
                         variant="contained"
-                        color="secondary"
                         className={classes.button}
                         startIcon={<CreateIcon/>}>
                         Создать
@@ -126,45 +155,44 @@ export const NavBar:FC = () => {
                     <Button
                         onClick={() => console.log('Обновил')}
                         variant="contained"
-                        color="secondary"
                         className={classes.button}
                         startIcon={<AutorenewIcon fontSize='large'/>}>
                     </Button>
                 </ButtonGroup>
                 <List component='nav' aria-label="main mailbox folders">
-                    <ListItem button onClick={() => history.push('/mails')}>
-                        <ListItemIcon>
-                            <MailOutlineOutlinedIcon/>
+                    <ListItem className={classes.list__ListItem} button onClick={() => history.push('/mails')}>
+                        <ListItemIcon className={classes.listItem__ListItemIcon}>
+                            <MailOutlineOutlinedIcon className={classes.button_color}/>
                         </ListItemIcon>
                         <ListItemText primary="Входящие"/>
                     </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <MarkunreadMailboxOutlinedIcon/>
+                    <ListItem className={classes.list__ListItem} button>
+                        <ListItemIcon className={classes.listItem__ListItemIcon}>
+                            <MarkunreadMailboxOutlinedIcon className={classes.button_color}/>
                         </ListItemIcon>
                         <ListItemText primary="Рассылки"/>
                     </ListItem>
-                    <ListItem button onClick={() => history.push('/social')}>
-                        <ListItemIcon>
-                            <ChatBubbleOutlineOutlinedIcon/>
+                    <ListItem className={classes.list__ListItem} button onClick={() => history.push('/social')}>
+                        <ListItemIcon className={classes.listItem__ListItemIcon}>
+                            <ChatBubbleOutlineOutlinedIcon className={classes.button_color}/>
                         </ListItemIcon>
                         <ListItemText primary="Социальные сети"/>
                     </ListItem>
-                    <ListItem button onClick={() => history.push('/spam')}>
-                        <ListItemIcon>
-                            <ReportIcon/>
+                    <ListItem className={classes.list__ListItem} button onClick={() => history.push('/spam')}>
+                        <ListItemIcon className={classes.listItem__ListItemIcon}>
+                            <ReportIcon className={classes.button_color}/>
                         </ListItemIcon>
                         <ListItemText primary="Спам"/>
                     </ListItem>
                 </List>
-                <Divider/>
+                <Divider className={classes.divider}/>
 
                 <List component='nav'>
                     <ListItem button onClick={handleClick}>
                         {open ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                         <ListItemText primary='Папки'/>
                         <IconButton onClick={() => handleClickOpen()} edge="end" aria-label="delete">
-                            <CreateNewFolderIcon color='primary' fontSize='small'/>
+                            <CreateNewFolderIcon className={classes.button_color} fontSize='small'/>
                         </IconButton>
 
                         <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -195,11 +223,11 @@ export const NavBar:FC = () => {
                             <List component='div' disablePadding>
                                 {folders.map((folder:Folders) => (
                                     <ListItem button key={folder.id}>
-                                        <ListItemIcon>
+                                        <ListItemIcon className={classes.folderIcon}>
                                             <FolderIcon/>
                                         </ListItemIcon>
                                         <ListItemText primary={folder.primary}/>
-                                        <IconButton onClick={() => deleteFolder(folder.id, folders, setFolders)} edge="end" aria-label="delete">
+                                        <IconButton className={classes.folderDelButton} onClick={() => deleteFolder(folder.id, folders, setFolders)} edge="end" aria-label="delete">
                                             <HighlightOffIcon fontSize='small'/>
                                         </IconButton>
                                     </ListItem>

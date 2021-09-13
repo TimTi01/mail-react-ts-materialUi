@@ -45,24 +45,10 @@ const useStyle = makeStyles((theme:Theme) => createStyles({
     },
     maxWidth: {
         maxWidth: '275px',
-    }
+    },
 }))
 
-// upper checkbox
-// function changeAllMailChecked(mails: Mail[], setMails: (value: (((prevState: Mail[]) => Mail[]) | Mail[])) => void, checkedMain: boolean, setCheckedMain: any, disabled: boolean, setDisabled: any) {
-//     setCheckedMain(!checkedMain)
-//     for (const mail of mails) {
-//         if (mail.checked === checkedMain) {
-//             mail.checked = !mail.checked
-//         }
-//     }
-//     let mailChecked = mails.find(mail => mail.checked)
-//     mailChecked ? setDisabled(false) : setDisabled(true)
-//     setDisabled(!disabled)
-// }
-
 function changeAllMailChecked(mails: Mail[], setMails:any, checkedMain: boolean, setCheckedMain:any, disabled: boolean, setDisabled:any) {
-    // debugger
     const newMails = []
     setCheckedMain(checkedMain = !checkedMain)
     for (const mail of mails) {
@@ -91,8 +77,7 @@ function changeMailChecked(oldMails: Mail[], mailId: number, setMails: any, disa
     setMails(newMails)
 }
 
-function delMails(mails:Mail[], setMails:any, checkedMain:boolean) {
-    debugger
+function delMails(mails:Mail[], setMails:any) {
     const newMails = []
     for (const mail of mails) {
         if (mail.checked) {
@@ -102,7 +87,6 @@ function delMails(mails:Mail[], setMails:any, checkedMain:boolean) {
         }
     }
     setMails(newMails)
-    // setMails(mails)
 }
 
 function getMail(mails:Mail[], setMails:any) {
@@ -115,13 +99,8 @@ function getMail(mails:Mail[], setMails:any) {
 }
 
 export const Spam:FC<spamProps> = ({mails, setMails}) => {
-    console.log(mails)
-    console.log(setMails)
-
     const classes = useStyle()
-    // const [spamMails, setSpamMails] = useState<Mail[]>([])
     const [checkedMain, setCheckedMain] = useState(false)
-
     const [disabled, setDisabled] = useState(true)
 
     function checkArray() {
@@ -151,7 +130,7 @@ export const Spam:FC<spamProps> = ({mails, setMails}) => {
                             <Button disabled={disabled} variant={'text'} startIcon={<ForwardIcon/>}>Переслать</Button>
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} onClick={() => {delMails(mails, setMails, checkedMain)}} variant={'text'} startIcon={<DeleteForeverIcon/>}>Удалить</Button>
+                            <Button disabled={disabled} onClick={() => {delMails(mails, setMails)}} variant={'text'} startIcon={<DeleteForeverIcon/>}>Удалить</Button>
                         </Box>
                         <Box pl={1}>
                             <Button disabled={disabled} variant={'text'} onClick={() => getMail(mails, setMails)} startIcon={<ReplayIcon/>}>Не спам!</Button>

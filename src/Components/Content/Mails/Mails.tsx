@@ -8,7 +8,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import UnsubscribeIcon from '@material-ui/icons/Unsubscribe';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { deepPurple } from '@material-ui/core/colors';
+import lightBlue from "@material-ui/core/colors/lightBlue";
 
 const useStyle = makeStyles((theme:Theme) => createStyles({
     container: {
@@ -24,22 +24,46 @@ const useStyle = makeStyles((theme:Theme) => createStyles({
         flexDirection: 'column',
         height: '100%',
         width: '100%',
+        border: '3px solid #edeef0',
+        boxShadow: 'none'
     },
     avatar: {
         height: theme.spacing(4),
         width: theme.spacing(4),
-        color: theme.palette.getContrastText(deepPurple[500]),
-        backgroundColor: deepPurple[500],
+        color: '#fff',
+        backgroundColor: lightBlue[400],
     },
     maxWidth: {
         maxWidth: '275px',
+    },
+    divider: {
+        height: '3px',
+        backgroundColor: '#edeef0',
+    },
+    mail: {
+        borderTop: '1px solid #edeef0',
+        borderBottom: '1px solid #edeef0',
+    },
+    mail__checkbox: {
+        '&:hover': {
+            backgroundColor: 'transparent',
+        },
+    },
+    mail__BoxTitle: {
+        width: '260px',
+        padding: 0,
+    },
+    mail__title: {
+        maxWidth: '200px',
+    },
+    mail__body: {
+        maxWidth: '300px',
     }
 }))
 
-function changeAllMailChecked(mails: Mail[], setMails:any, checkedMain: boolean, setCheckedMain:any, disabled: boolean, setDisabled:any) {
+function changeAllMailChecked(mails: Mail[], setMails: any, checkedMain: boolean, setCheckedMain: any, disabled: boolean, setDisabled: any) {
     const newMails = []
     setCheckedMain(checkedMain = !checkedMain)
-    // debugger
     for (const mail of mails) {
         if (mail.checked !== checkedMain) {
             mail.checked = !mail.checked
@@ -75,14 +99,6 @@ function changeMailChecked(oldMails: Mail[], mailId: number, setMails: any, disa
     setMails(newMails)
 }
 
-// for (const mail of mails) {
-//     if (mail.checked) {
-//         mails.splice(mail.id - 1, 1)
-//     } else {
-//         newMails.push(mail)
-//     }
-// }
-
 function delMails(mails:Mail[], setMails:any, checkedMain:boolean) {
     const newMails = []
     for (let mail = 0; mail < mails.length; mail++) {
@@ -116,11 +132,13 @@ export const Mails:FC<spamProps> = ({mails, setMails}) => {
     return (
         <Container className={classes.container} maxWidth={"xl"}>
             <Toolbar/>
-            <Paper className={classes.paper} elevation={5}>
+            <Paper className={classes.paper}>
                 <Grid container direction={"column"}>
                     <Grid item container direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
                         <Box pl={1}>
                             <Checkbox checked={checkedMain || false}
+                                      className={classes.mail__checkbox}
+                                      color='primary'
                                       onClick={() => changeAllMailChecked(mails, setMails, checkedMain, setCheckedMain, disabled, setDisabled)}
                             />
                         </Box>
@@ -145,27 +163,26 @@ export const Mails:FC<spamProps> = ({mails, setMails}) => {
                             </IconButton>
                         </Box>
                     </Grid>
-                    <Divider/>
+                    <Divider className={classes.divider}/>
                     {mails.map((mail: Mail) => {
                         if (!mail.is_spam) {
                             return (
-                                <Grid key={mail.id} item container zeroMinWidth direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
+                                <Grid className={classes.mail} key={mail.id} item container zeroMinWidth direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
                                     <Box pl={1}>
-                                        {/*<Checkbox checked={mail.checked || checkedMain}*/}
-                                        {/*          onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}*/}
-                                        {/*/>*/}
                                         <Checkbox checked={mail.checked || false}
+                                                  className={classes.mail__checkbox}
+                                                  color='primary'
                                                   onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled, checkedMain, setCheckedMain)}
                                         />
                                     </Box>
-                                    <Box pr={10} display={'flex'} flexDirection={'row'} alignItems={'center'}>
+                                    <Box className={classes.mail__BoxTitle} pr={10} display={'flex'} flexDirection={'row'} alignItems={'center'}>
                                         <Avatar alt={mail.email} className={classes.avatar}/>
                                         <Box pl={1}>
-                                            <Typography>{mail.email}</Typography>
+                                            <Typography noWrap className={classes.mail__title}>{mail.email}</Typography>
                                         </Box>
                                     </Box>
                                     <Box pr={2}>
-                                        <Typography>{mail.name}</Typography>
+                                        <Typography noWrap className={classes.mail__body}>{mail.name}</Typography>
                                     </Box>
                                     <Box className={classes.maxWidth}>
                                         <Typography noWrap color={'textSecondary'} variant={'body2'}>
