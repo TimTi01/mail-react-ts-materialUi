@@ -31,6 +31,7 @@ import FolderIcon from "@material-ui/icons/Folder";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {Folders} from "../../../Types/Types";
 import lightBlue from '@material-ui/core/colors/lightBlue';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 import red from '@material-ui/core/colors/red';
 
 const drawerWidth = 240
@@ -56,15 +57,37 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: drawerWidth - 30,
             },
         },
-        button: {
+        button_L: {
+            marginTop: theme.spacing(2),
+            marginLeft: theme.spacing(1),
+            padding: '6px 16px 5px 16px',
+            borderRadius: theme.spacing(4),
+            backgroundColor: deepPurple[400],
+            color: '#fff',
+            '&:hover': {
+                backgroundColor: deepPurple[400],
+            },
+            '& span': {
+                '& span': {
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(0.5),
+                    marginBottom: theme.spacing(0.5),
+                },
+            },
+        },
+        button_R: {
             marginTop: theme.spacing(2),
             marginLeft: theme.spacing(1),
             borderRadius: theme.spacing(4),
-            backgroundColor: lightBlue[400],
+            backgroundColor: deepPurple[400],
             color: '#fff',
             '&:hover': {
-                backgroundColor: lightBlue[400],
+                backgroundColor: deepPurple[400],
             },
+            '& span': {
+                marginLeft: theme.spacing(0),
+                marginRight: theme.spacing(0),
+            }
         },
         list__ListItem: {
             padding: '3px 16px',
@@ -73,14 +96,14 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         listItem__ListItemIcon: {
-            minWidth: '40px',
+            minWidth: '35px',
         },
         divider: {
             height: '3px',
             backgroundColor: '#edeef0',
         },
         button_color: {
-            color: lightBlue[400],
+            color: deepPurple[300],
         },
         folderIcon: {
             minWidth: '40px',
@@ -146,17 +169,19 @@ export const NavBar:FC = () => {
                 <Toolbar/>
                 <ButtonGroup>
                     <Button
+                        className={classes.button_L}
                         onClick={() => console.log('Жмяк')}
                         variant="contained"
-                        className={classes.button}
-                        startIcon={<CreateIcon/>}>
+                        startIcon={<CreateIcon fontSize={"large"}/>}
+                    >
                         Создать
                     </Button>
                     <Button
+                        className={classes.button_R}
                         onClick={() => console.log('Обновил')}
                         variant="contained"
-                        className={classes.button}
-                        startIcon={<AutorenewIcon fontSize='large'/>}>
+                        startIcon={<AutorenewIcon fontSize={"large"}/>}
+                    >
                     </Button>
                 </ButtonGroup>
                 <List component='nav' aria-label="main mailbox folders">

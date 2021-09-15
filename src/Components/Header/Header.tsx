@@ -32,9 +32,20 @@ const useStyle = makeStyles((theme:Theme) =>
         },
         wrap__iconButton: {
             color: '#b9b9b9',
-            padding: '8px',
+            padding: '5px 5px 5px 8px;',
             '&:hover': {
               backgroundColor: 'transparent',
+            },
+        },
+        input__padding: {
+            padding: '6px 0 6px',
+        },
+        inputInput: {
+            padding: theme.spacing(1, 1, 1, 0),
+            transition: theme.transitions.create('width'),
+            width: '100%',
+            [theme.breakpoints.up('md')]: {
+                width: '20ch',
             },
         },
         toolbar__avatar: {
@@ -63,7 +74,15 @@ export const Header = () => {
                         <IconButton className={classes.wrap__iconButton}>
                             <Search/>
                         </IconButton>
-                        <InputBase color='secondary' placeholder='Поиск'/>
+                        {/*<InputBase className={classes.input__padding} color='secondary' placeholder='Поиск'/>*/}
+                        <InputBase
+                            placeholder="Поиск…"
+                            color='secondary'
+                            classes={{
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
                     </Box>
                 </Box>
                 <Avatar className={classes.toolbar__avatar}/>
