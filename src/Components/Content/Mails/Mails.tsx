@@ -9,6 +9,10 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import UnsubscribeIcon from '@material-ui/icons/Unsubscribe';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import lightBlue from "@material-ui/core/colors/lightBlue";
+import amber from "@material-ui/core/colors/amber";
+import red from "@material-ui/core/colors/red";
+import grey from "@material-ui/core/colors/grey";
+
 
 const useStyle = makeStyles((theme:Theme) => createStyles({
     container: {
@@ -45,9 +49,24 @@ const useStyle = makeStyles((theme:Theme) => createStyles({
         borderBottom: '1px solid #edeef0',
     },
     mail__checkbox: {
+        '&.Mui-checked': {
+            color: '#ffcb00',
+        },
         '&:hover': {
             backgroundColor: 'transparent',
         },
+    },
+    mail__delIcon: {
+        color: red[500],
+    },
+    mail__delIconDisabled: {
+        color: grey[500],
+    },
+    mail__spamIcon: {
+        color: amber[900],
+    },
+    mail__spamIconDisabled: {
+        color: grey[500],
     },
     mail__BoxTitle: {
         width: '260px',
@@ -143,19 +162,30 @@ export const Mails:FC<spamProps> = ({mails, setMails}) => {
                             />
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} variant={'text'} startIcon={<ForwardIcon/>}>Переслать</Button>
+                            <Button disabled={true} variant={'text'} startIcon={<ForwardIcon/>}>Переслать</Button>
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} onClick={() => delMails(mails, setMails, checkedMain)} variant={'text'} startIcon={<DeleteForeverIcon/>}>Удалить</Button>
+                            <Button disabled={disabled}
+                                    onClick={() => delMails(mails, setMails, checkedMain)}
+                                    variant={'text'}
+                                    startIcon={<DeleteForeverIcon className={!disabled ? classes.mail__delIcon : classes.mail__delIconDisabled}/>}
+                            >
+                                    Удалить
+                            </Button>
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} onClick={() => getSpamMail(mails, setMails)} variant={'text'} startIcon={<ReportIcon/>}>Это спам!</Button>
+                            <Button disabled={disabled} onClick={() => getSpamMail(mails, setMails)}
+                                    variant={'text'}
+                                    startIcon={<ReportIcon className={!disabled ? classes.mail__spamIcon : classes.mail__spamIconDisabled}/>}
+                            >
+                                Это спам!
+                            </Button>
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} variant={'text'} startIcon={<DraftsIcon/>}>Прочитано</Button>
+                            <Button disabled={true} variant={'text'} startIcon={<DraftsIcon/>}>Прочитано</Button>
                         </Box>
                         <Box pl={1}>
-                            <Button disabled={disabled} variant={'text'} startIcon={<UnsubscribeIcon/>}>Отключить рассылки</Button>
+                            <Button disabled={true} variant={'text'} startIcon={<UnsubscribeIcon/>}>Отключить рассылки</Button>
                         </Box>
                         <Box>
                             <IconButton disabled>

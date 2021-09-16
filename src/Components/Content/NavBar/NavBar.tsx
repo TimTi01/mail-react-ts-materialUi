@@ -30,8 +30,6 @@ import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import FolderIcon from "@material-ui/icons/Folder";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {Folders} from "../../../Types/Types";
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import deepPurple from '@material-ui/core/colors/deepPurple';
 import red from '@material-ui/core/colors/red';
 
 const drawerWidth = 240
@@ -62,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: theme.spacing(1),
             padding: '6px 16px 5px 16px',
             borderRadius: theme.spacing(4),
-            backgroundColor: deepPurple[400],
-            color: '#fff',
+            backgroundColor: '#fed01e',
+            color: '#000',
             '&:hover': {
-                backgroundColor: deepPurple[400],
+                backgroundColor: '#fed01e',
             },
             '& span': {
                 '& span': {
@@ -79,10 +77,10 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(2),
             marginLeft: theme.spacing(1),
             borderRadius: theme.spacing(4),
-            backgroundColor: deepPurple[400],
-            color: '#fff',
+            backgroundColor: '#fed01e',
+            color: '#000',
             '&:hover': {
-                backgroundColor: deepPurple[400],
+                backgroundColor: '#fed01e',
             },
             '& span': {
                 marginLeft: theme.spacing(0),
@@ -103,7 +101,14 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#edeef0',
         },
         button_color: {
-            color: deepPurple[300],
+            color: '#d8a21a',
+        },
+        createNewFolderIcon: {
+            padding: '0 12px',
+            '&:hover': {
+                color: '#d8a21a',
+                backgroundColor: 'transparent',
+            },
         },
         folderIcon: {
             minWidth: '40px',
@@ -216,8 +221,8 @@ export const NavBar:FC = () => {
                     <ListItem button onClick={handleClick}>
                         {open ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                         <ListItemText primary='Папки'/>
-                        <IconButton onClick={() => handleClickOpen()} edge="end" aria-label="delete">
-                            <CreateNewFolderIcon className={classes.button_color} fontSize='small'/>
+                        <IconButton className={classes.createNewFolderIcon} onClick={() => handleClickOpen()} edge="end" aria-label="delete">
+                            <CreateNewFolderIcon fontSize='small'/>
                         </IconButton>
 
                         <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title">
