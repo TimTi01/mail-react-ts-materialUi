@@ -9,7 +9,10 @@ import ReportIcon from '@material-ui/icons/Report';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import UnsubscribeIcon from '@material-ui/icons/Unsubscribe';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { deepPurple } from '@material-ui/core/colors';
+import lightBlue from "@material-ui/core/colors/lightBlue";
+import red from "@material-ui/core/colors/red";
+import grey from "@material-ui/core/colors/grey";
+import amber from "@material-ui/core/colors/amber";
 
 const useStyle = makeStyles((theme:Theme) => createStyles({
     container: {
@@ -25,30 +28,57 @@ const useStyle = makeStyles((theme:Theme) => createStyles({
         flexDirection: 'column',
         height: '100%',
         width: '100%',
+        border: '3px solid #edeef0',
+        boxShadow: 'none'
     },
     avatar: {
         height: theme.spacing(4),
         width: theme.spacing(4),
-        color: theme.palette.getContrastText(deepPurple[500]),
-        backgroundColor: deepPurple[500],
+        color: '#fff',
+        backgroundColor: lightBlue[400],
     },
     maxWidth: {
         maxWidth: '275px',
+    },
+    divider: {
+        height: '3px',
+        backgroundColor: '#edeef0',
+    },
+    mail: {
+        borderTop: '1px solid #edeef0',
+        borderBottom: '1px solid #edeef0',
+    },
+    mail__checkbox: {
+        '&.Mui-checked': {
+            color: '#ffcb00',
+        },
+        '&:hover': {
+            backgroundColor: 'transparent',
+        },
+    },
+    mail__delIcon: {
+        color: red[500],
+    },
+    mail__delIconDisabled: {
+        color: grey[500],
+    },
+    mail__spamIcon: {
+        color: amber[900],
+    },
+    mail__spamIconDisabled: {
+        color: grey[500],
+    },
+    mail__BoxTitle: {
+        width: '260px',
+        padding: 0,
+    },
+    mail__title: {
+        maxWidth: '200px',
+    },
+    mail__body: {
+        maxWidth: '300px',
     }
 }))
-
-// upper checkbox
-// function changeAllMailChecked(mails: Mail[], setMails: (value: (((prevState: Mail[]) => Mail[]) | Mail[])) => void, checkedMain: boolean, setCheckedMain: any, disabled: boolean, setDisabled: any) {
-//     setCheckedMain(!checkedMain)
-//     for (const mail of mails) {
-//         if (mail.checked === checkedMain) {
-//             mail.checked = !mail.checked
-//         }
-//     }
-//     let mailChecked = mails.find(mail => mail.checked)
-//     mailChecked ? setDisabled(false) : setDisabled(true)
-//     setDisabled(!disabled)
-// }
 
 function changeAllMailChecked(mails: Mail[], setMails:any, checkedMain: boolean, setCheckedMain:any, disabled: boolean, setDisabled:any) {
     // debugger
@@ -154,9 +184,6 @@ export const SocialNet:FC = () => {
                     {mails.map((mail: Mail) => (
                         <Grid key={mail.id} item container zeroMinWidth direction={"row"} alignItems={"center"} justifyContent={'flex-start'}>
                             <Box pl={1}>
-                                {/*<Checkbox checked={mail.checked || checkedMain}*/}
-                                {/*          onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}*/}
-                                {/*/>*/}
                                 <Checkbox checked={mail.checked}
                                           onClick={() => changeMailChecked(mails, mail.id, setMails, disabled, setDisabled)}
                                 />
